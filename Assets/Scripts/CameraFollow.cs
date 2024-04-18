@@ -29,7 +29,7 @@ public class CameraFollow : MonoBehaviour
 
 	#region Camera Spring
 	
-	[SerializeField] public bool bSpringCamera = false;
+	[SerializeField] public bool SpringCamera = false;
 
 	/// <summary>
 	/// Physics coefficient which controls the influence of the camera's position
@@ -141,7 +141,7 @@ public class CameraFollow : MonoBehaviour
 		if (followTarget == true)
         {
 
-			if (bSpringCamera)
+			if (SpringCamera)
 			{
 				// calculate spring
 				Vector3 stretch = baseCamera.transform.position - desiredPosition;
@@ -152,12 +152,13 @@ public class CameraFollow : MonoBehaviour
 				cameraVelocity += acceleration * Time.deltaTime;
 
 				Vector3 targetPosition = baseCamera.transform.position + cameraVelocity;
-				baseCamera.transform.position = targetPosition;
+				//baseCamera.transform.position = targetPosition;
+				baseCamera.transform.position = Vector3.Lerp(baseCamera.transform.position, targetPosition, 1.0f * deltaTime);
 			}
 			else
 			{
 				// Smoothly move the camera towards the target position
-				baseCamera.transform.position = Vector3.Lerp(baseCamera.transform.position, desiredPosition, 5.0f * deltaTime);
+				baseCamera.transform.position = Vector3.Lerp(baseCamera.transform.position, desiredPosition, 10.0f * deltaTime);
 			}
 		}
 	}
