@@ -7,9 +7,9 @@ using UnityEngine;
 public class Jump
 {
 	int numberOfPoints = 50;
-	Vector3 end = new Vector3(0, 10, 0);
+	Vector3 end = new Vector3(0, 20, 0);
 	Vector3 start = new Vector3(50, 0, 0);
-	float height = 100.0f;
+	float height = 10.0f;
 	Vector3 controlPoint1;
 	Vector3 controlPoint2;
 
@@ -123,4 +123,63 @@ public class Jump
 	}
 
 
+	public void DrawCurve()
+	{
+		
+		Vector3 p0 = GameObject.Find("StartPoint").transform.position;
+		Vector3 p1 = GameObject.Find("MidPoint").transform.position;
+		Vector3 p2 = GameObject.Find("EndPoint").transform.position;
+
+		Gizmos.color = Color.red;
+		Vector3 prevPoint = p0;
+		for (int i = 1; i <= segments; i++)
+		{
+			float t = i / (float)segments;
+			Vector3 point = CalculatePoint(p0, p1, p2, t);
+			Gizmos.DrawLine(prevPoint, point);
+			prevPoint = point;
+		}
+	}
+
+	public void DrawCubicBezierCurve()
+	{
+		Vector3 p0 = GameObject.Find("StartPoint").transform.position;
+		Vector3 p1 = GameObject.Find("MidPoint").transform.position;
+		Vector3 p2 = GameObject.Find("EndPoint").transform.position;
+
+
+		Vector3[] curvePoints = CalculateCubicBezierCurve(p0, p1, p2, segments);
+
+		Gizmos.color = Color.red;
+		for (int i = 1; i < curvePoints.Length; i++)
+		{
+			Gizmos.DrawLine(curvePoints[i - 1], curvePoints[i]);
+		}
+
+	}
+
+	Vector3[] CalculateCubicBezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, int segments)
+	{
+		Vector3[] points = new Vector3[segments + 1];
+
+		for (int i = 0; i <= segments; i++)
+		{
+			float t = i / (float)segments;
+			points[i] = CalculateCubicBezierPoint(p0, p1, p2, t);
+		}
+
+		return points;
+	}
+
+
+	Vector3 CalculateCubicBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, float t)
+	{
+		float u = 1 - t;
+		float tt = t * t;
+		float uu = u * u;
+
+		Vector3 p = uu * p0 + 2 * u * t * p1 + tt * p2;
+
+		return p;
+	}
 }

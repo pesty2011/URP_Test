@@ -31,7 +31,9 @@ public class Scene : MonoBehaviour
 		//		Gizmos.color = Color.red;
 		//		Gizmos.DrawSphere(end, 1);
 		//jump.DrawCatmullRomSpline();
-		jump.DrawJumpPath();
+		//jump.DrawJumpPath();
+		//jump.DrawCurve();
+		jump.DrawCubicBezierCurve();
 
 #if false
 		for (int i = 0; i < jumpSpline.Count; i++) 
@@ -42,5 +44,5 @@ public class Scene : MonoBehaviour
 			Gizmos.DrawSphere(p, 1);
 		}
 #endif
-    }
+	}
 }
